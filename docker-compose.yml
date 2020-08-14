@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  myapp-mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=starbux
+      - MYSQL_USER=myapp-user
+      - MYSQL_PASSWORD=password
+    ports:
+      - 3306:3306
+
+  spring:
+    build:
+      context: ./
+    ports:
+      - "8080:8080"
+    container_name: starbux
+    depends_on:
+      - myapp-mysql
+    environment:
+      - DATABASE_HOST=myapp-mysql
+      - DATABASE_USER=myapp-user
+      - DATABASE_PASSWORD=password
+      - DATABASE_NAME=starbux
+      - DATABASE_PORT=3306
